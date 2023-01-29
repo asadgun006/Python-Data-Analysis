@@ -1,0 +1,16 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+myFile = pd.read_csv('Excel_info/bitcoin_date.csv', names=['Timestamp', 'Price'], header=None, index_col='Timestamp',
+                     parse_dates=True)
+
+myFileTwo = pd.read_csv('Excel_info/ethprice.csv', index_col='Date(UTC)', parse_dates=True)
+
+newDataFrame = pd.DataFrame(index=myFileTwo.index)
+newDataFrame['Bitcoin Price'] = myFile['Price']
+newDataFrame['Ethereum Price'] = myFileTwo['Value']
+
+plt.plot(newDataFrame.index, newDataFrame['Bitcoin Price'])
+plt.plot(newDataFrame.index, newDataFrame['Ethereum Price'])
+plt.show()
