@@ -1,0 +1,18 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+sales_data_jan = pd.read_csv('Sales_January_2019.csv', index_col='Order ID')
+sales_data_feb = pd.read_csv('Sales_February_2019.csv', index_col='Order ID')
+sales_data_mar = pd.read_csv('Sales_March_2019.csv', index_col='Order ID')
+sales_data_mar = sales_data_mar[sales_data_mar['Order Date'].str[0:2] != '04']
+
+first_quarter = pd.concat([sales_data_jan, sales_data_feb, sales_data_mar])
+first_quarter = first_quarter.dropna()
+first_quarter = first_quarter[first_quarter['Order Date'].str[0:2] != 'Or']
+first_quarter['Order Date'] = pd.to_datetime(first_quarter['Order Date'])
+first_quarter['Quantity Ordered'] = pd.to_numeric(first_quarter['Quantity Ordered'])
+first_quarter['Price Each'] = pd.to_numeric(first_quarter['Price Each'])
+first_quarter['Total Sales'] = first_quarter['Quantity Ordered'] * first_quarter['Price Each']
+first_quarter['Month'] = first_quarter['Order Date'].dt.month
+first_quarter.to_csv(r"first_quarter_sales.csv")
